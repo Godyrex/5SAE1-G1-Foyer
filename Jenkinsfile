@@ -37,6 +37,13 @@ pipeline {
                 }
             }
         }
+        stage('Pull Docker Image') {
+            steps {
+                script {
+                    sh 'docker pull oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
+                }
+            }
+        }
 
         stage('Archive Deliverable') {
             steps {
