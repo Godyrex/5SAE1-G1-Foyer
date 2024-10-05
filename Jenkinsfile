@@ -20,6 +20,28 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image with the JAR file
+                    sh 'docker build -t oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest .'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Log in to Docker Hub
+                    withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_HUB_PASSWORD')]) {
+                        sh 'echo $DOCKER_HUB_PASSWORD | docker login -u oussemaouakad1 --password-stdin'
+                    }
+
+                    sh 'docker push oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
+                }
+            }
+        }
+
         stage('Archive Deliverable') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: false
