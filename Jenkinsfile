@@ -30,12 +30,12 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-      agent any
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
-        }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                    sh 'docker push oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
+                }
+            }
         }
 
         stage('Archive Deliverable') {
