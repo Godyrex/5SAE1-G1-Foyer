@@ -32,15 +32,14 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Log in to Docker Hub
-                    withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_HUB_PASSWORD')]) {
-                        sh 'echo $DOCKER_HUB_PASSWORD | docker login -u oussemaouakad1 --password-stdin'
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                        def image = docker.build('oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest')
+                        image.push('latest')
                     }
-
-                    sh 'docker push oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
                 }
             }
         }
+
 
         stage('Archive Deliverable') {
             steps {
