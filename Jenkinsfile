@@ -33,13 +33,11 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        def image = docker.build('oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest')
-                        image.push('latest')
+                        sh 'docker push oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
                     }
                 }
             }
         }
-
 
         stage('Archive Deliverable') {
             steps {
