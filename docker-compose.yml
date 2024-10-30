@@ -1,0 +1,31 @@
+version: '3'
+services:
+  mysqldb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: devops
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  app:
+    image: wissal-bahri-app
+    depends_on:
+      - mysqldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/devops
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      CORS_ORIGIN: "http://192.168.56.10:4200"
+    ports:
+      - "8082:8082"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
