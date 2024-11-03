@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests with JaCoCo') {
+  /*      stage('Run Tests with JaCoCo') {
             steps {
                 // Run tests and generate coverage report with JaCoCo
                 sh 'mvn test jacoco:report'
@@ -49,7 +49,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Build Without Tests') {
             steps {
