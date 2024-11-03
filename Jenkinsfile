@@ -20,10 +20,8 @@ pipeline {
 
         stage('Run Tests with JaCoCo') {
             steps {
-                // Prepare JaCoCo agent for coverage and then run tests
-                sh 'mvn org.jacoco:jacoco-maven-plugin:0.8.7:prepare-agent test'
-                // Generate the report after test execution
-                sh 'mvn org.jacoco:jacoco-maven-plugin:0.8.7:report'
+                // Run tests and generate coverage report with JaCoCo
+                sh 'mvn test jacoco:report'
             }
         }
 
