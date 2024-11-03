@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SONARQUBE_SERVER = 'sq' // SonarQube installation name in Jenkins
-        NEXUS_REPO_URL = 'http://192.168.33.10:8081/repository/maven-releases/' // URL to Nexus repository
+        NEXUS_REPO_URL = 'http://192.168.33.10:8081/repository/maven-snapshots/' // URL to Nexus repository
         NEXUS_CREDENTIALS_ID = 'nexus-credentials' // Jenkins credentials ID for Nexus
     }
 
@@ -85,7 +85,7 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: env.NEXUS_CREDENTIALS_ID, passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
-                    sh "mvn deploy -DaltDeploymentRepository=nexus-releases::default::${env.NEXUS_REPO_URL} -DskipTests"
+                    sh "mvn deploy -DaltDeploymentRepository=nexus-snapshots::default::${env.NEXUS_REPO_URL} -DskipTests"
                 }
             }
         }
