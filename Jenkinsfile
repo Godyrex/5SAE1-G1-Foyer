@@ -20,10 +20,13 @@ pipeline {
 
         stage('Run Tests with JaCoCo') {
             steps {
-                // Run tests and generate coverage report with JaCoCo using direct plugin reference
-                sh 'mvn test org.jacoco:jacoco-maven-plugin:0.8.7:report'
+                // Prepare JaCoCo agent for coverage and then run tests
+                sh 'mvn org.jacoco:jacoco-maven-plugin:0.8.7:prepare-agent test'
+                // Generate the report after test execution
+                sh 'mvn org.jacoco:jacoco-maven-plugin:0.8.7:report'
             }
         }
+
 
         stage('SonarQube Analysis') {
             steps {
