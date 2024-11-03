@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        SONARQUBE_SERVER = 'sq' // SonarQube installation name in Jenkins
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,6 +15,22 @@ pipeline {
         stage('Clean Project') {
             steps {
                 sh 'mvn clean'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Run tests to generate test reports for SonarQube analysis
+                sh 'mvn test'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                // Run SonarQube analysis
+                withSonarQubeEnv('sq') { // 'sq' should match the SonarQube installation name in Jenkins
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar'
+                }
             }
         }
 
@@ -37,6 +57,7 @@ pipeline {
                 }
             }
         }
+
         stage('Pull Docker Image') {
             steps {
                 script {
