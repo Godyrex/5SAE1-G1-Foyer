@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SONARQUBE_SERVER = 'sq' // SonarQube installation name in Jenkins
-        NEXUS_REPO_URL = 'http://<your-nexus-ip>:8081/repository/maven-releases/' // URL to Nexus repository
+        NEXUS_REPO_URL = 'http://192.168.33.10:8081/repository/maven-releases/' // URL to Nexus repository
         NEXUS_CREDENTIALS_ID = 'nexus-credentials' // Jenkins credentials ID for Nexus
     }
 
