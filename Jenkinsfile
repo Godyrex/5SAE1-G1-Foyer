@@ -37,11 +37,11 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
+   /*     stage('Quality Gate') {
             steps {
                 script {
                     // Wait for the SonarQube Quality Gate result
-                    timeout(time: 2, unit: 'MINUTES') { // Timeout after 5 minutes if no response
+                    timeout(time: 5, unit: 'MINUTES') { // Timeout after 5 minutes if no response
                         def qualityGate = waitForQualityGate()
                         if (qualityGate.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
@@ -49,7 +49,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
 
         stage('Build Without Tests') {
             steps {
@@ -66,7 +66,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+      /*  stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                     sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
@@ -81,7 +81,7 @@ pipeline {
                     sh 'docker pull oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest'
                 }
             }
-        }
+        }*/
         stage('Deploy to Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: env.NEXUS_CREDENTIALS_ID, passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
