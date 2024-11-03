@@ -18,18 +18,32 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Tests with JaCoCo') {
             steps {
-                // Run tests to generate test reports for SonarQube analysis
-                sh 'mvn test'
+                // Run tests and generate coverage report with JaCoCo using direct plugin reference
+                sh 'mvn test org.jacoco:jacoco-maven-plugin:0.8.7:report'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                // Run SonarQube analysis
                 withSonarQubeEnv('sq') { // 'sq' should match the SonarQube installation name in Jenkins
+                    // Run SonarQube analysis, which includes JaCoCo coverage data
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar'
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    // Wait for the SonarQube Quality Gate result
+                    timeout(time: 2, unit: 'MINUTES') { // Timeout after 5 minutes if no response
+                        def qualityGate = waitForQualityGate()
+                        if (qualityGate.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qualityGate.status}"
+                        }
+                    }
                 }
             }
         }
