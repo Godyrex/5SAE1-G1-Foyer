@@ -1,0 +1,6 @@
+
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(’÷ßıúÿÿÿÿ
+`
+java:S1128"ERemove this unused import 'tn.esprit.spring.DAO.Entities.Universite'.(†Ïü¥øÿÿÿÿ
+o
+java:S1128"TRemove this unused import 'tn.esprit.spring.Services.Universite.IUniversiteService'.(ÿ’ãûÿÿÿÿ
