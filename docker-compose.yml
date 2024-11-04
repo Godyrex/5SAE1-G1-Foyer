@@ -13,7 +13,7 @@ services:
       - app-network
 
   app:
-    image: wbahri-bahri-app
+    image: wbahri-app
     depends_on:
       - mysqldb
     environment:
