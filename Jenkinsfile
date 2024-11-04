@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         // Define SonarQube Token as an environment variable
-        SONAR_TOKEN = 'sqa_57049229e588e28dc7a5f68a6d3ffaa91ecfce15'
+        SONAR_TOKEN = 'sqa_e7a92efe3eee04ba242da4fb2dddc04677a2c11f'
     }
     stages {
         stage('Clone Repository') {
@@ -35,7 +35,7 @@ pipeline {
                     sh '''
                     mvn sonar:sonar \
                     -Dsonar.projectKey=Foyer \
-                    -Dsonar.host.url=http://192.168.56.11:9000 \
+                    -Dsonar.host.url=http://192.168.25.125:9000 \
                     -Dsonar.login=${SONAR_TOKEN} \
                     -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco/jacoco.xml
                     '''
@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 echo 'Deploying to Nexus...'
-                sh 'mvn deploy -X -DskipTests=true -DaltDeploymentRepository=deploymentRepo::default::http://192.168.56.11:8081/repository/maven-releases/'         
+                sh 'mvn deploy -X -DskipTests=true -DaltDeploymentRepository=deploymentRepo::default::http://192.168.25.25:8081/repository/maven-releases/'         
                 }
         }
         stage('Build Docker Image') {
