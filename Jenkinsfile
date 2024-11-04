@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 echo 'Deploying to Nexus...'
-                sh 'mvn deploy -X -DskipTests=true -DaltDeploymentRepository=deploymentRepo::default::http://192.168.56.10:8081/repository/maven-releases/'         
+                sh 'mvn deploy -X -DskipTests=true -DaltDeploymentRepository=deploymentRepo::default::http://192.168.56.11:8081/repository/maven-releases/'         
                 }
         }
         stage('Build Docker Image') {
