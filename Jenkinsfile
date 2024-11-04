@@ -1,55 +1,79 @@
 pipeline {
-    agent any  
+    agent any
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Checkout') {
             steps {
                 git branch: 'NourChallouf_5SAE1_G1', url: 'git@github.com:Godyrex/5SAE1-G1-Foyer.git', credentialsId: 'ca5934e0-4211-44f9-8128-0f3dfa24a447'
             }
         }
 
-        stage('Build') {
+        stage('Clean Project') {
             steps {
-                echo 'Building the project...'
-    
+                sh 'mvn clean'
             }
         }
 
-        stage('Test') {
+        stage('Build Without Tests') {
             steps {
-              
-                echo 'Running tests...'
-            
+                sh 'mvn package -DskipTests'
             }
         }
 
-        stage('Deploy') {
+        stage('Build Docker Image') {
             steps {
-              
-                echo 'Deploying the application...'
-        
+                script {
+                    // Build the Docker image with a specific tag
+                    sh 'docker build -t parkchanyeolnour/foyer-app:latest .'
+                }
             }
         }
 
-    
-        stage('Cleanup') {
+        stage('Push Docker Image') {
             steps {
-                echo 'Cleaning up...'
-             
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                    script {
+                        // Login to Docker Hub
+                        sh "echo ${dockerHubPassword} | docker login -u ${dockerHubUser} --password-stdin"
+                        // Push the Docker image
+                        sh 'docker push parkchanyeolnour/foyer-app:latest'
+                    }
+                }
+            }
+        }
+
+        stage('Pull Docker Image') {
+            steps {
+                script {
+                    // Pull the Docker image
+                    sh 'docker pull parkchanyeolnour/foyer-app:latest'
+                }
+            }
+        }
+
+        stage('Archive Deliverable') {
+            steps {
+                // Archive the build artifact
+                archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: false
             }
         }
     }
-    
+
     post {
+        always {
+            cleanWs()
+        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Build completed successfully.'
         }
         failure {
-            echo 'Pipeline failed.'
-        }
-        always {
-            echo 'This will always run after the pipeline finishes.'
+            echo 'Build failed.'
         }
     }
 }
-
