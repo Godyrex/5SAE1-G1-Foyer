@@ -8,7 +8,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 git branch: 'WissalBahri_5SAE1_G1',
-                    credentialsId: 'git',
+                    credentialsId: 'gitwiwiwi',
                     url: 'git@github.com:Godyrex/5SAE1-G1-Foyer.git'
             }
         }
@@ -53,7 +53,7 @@ pipeline {
                 script {
                     echo 'Building Docker Image...'
                     // Build Docker image with the provided tag
-                    def appImage = docker.build("wissal/back-devops:1.0")
+                    def appImage = docker.build("wbahri/back-devops:1.0")
                 }
             }
         }
@@ -64,7 +64,7 @@ pipeline {
                     echo 'Deploying Docker Image...'
                     // Authenticate with Docker Hub and push the image
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-token') {
-                    def appImage = docker.image('wissal/back-devops:1.0')
+                    def appImage = docker.image('wbahri/back-devops:1.0')
                     appImage.push()
                 }
 
@@ -78,7 +78,7 @@ pipeline {
                 script {
                     echo 'Removing old containers...'
                     // Stop and remove old containers based on image name
-                    sh "docker ps -a | grep 'wissalbahri' | awk '{print \$1}' | xargs --no-run-if-empty docker stop | xargs --no-run-if-empty docker rm"
+                    sh "docker ps -a | grep 'wbahri' | awk '{print \$1}' | xargs --no-run-if-empty docker stop | xargs --no-run-if-empty docker rm"
                 }
             }
         }
@@ -88,7 +88,7 @@ pipeline {
                 script {
                     echo 'Starting services with Docker Compose...'
                     // Pull the latest image and start services with Docker Compose
-                    def appImage = docker.image('wissal/back-devops:1.0')
+                    def appImage = docker.image('wbahri/back-devops:1.0')
                     appImage.pull()
                     sh 'docker compose down'
                     sh 'docker compose up -d'
