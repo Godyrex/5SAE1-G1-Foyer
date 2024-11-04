@@ -35,7 +35,7 @@ pipeline {
                     sh '''
                     mvn sonar:sonar \
                     -Dsonar.projectKey=Foyer \
-                    -Dsonar.host.url=http://192.168.56.10:9000 \
+                    -Dsonar.host.url=http://192.168.56.11:9000 \
                     -Dsonar.login=${SONAR_TOKEN} \
                     -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco/jacoco.xml
                     '''
