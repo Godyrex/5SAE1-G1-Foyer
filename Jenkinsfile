@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         // Define SonarQube Token as an environment variable
-        SONAR_TOKEN = 'sqa_24bc04c3c84fb78276d82b312d6c001e987d90d9'
+        SONAR_TOKEN = 'sqa_57049229e588e28dc7a5f68a6d3ffaa91ecfce15'
     }
     stages {
         stage('Clone Repository') {
