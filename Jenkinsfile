@@ -89,12 +89,21 @@ pipeline {
                 }
             }
         }
+        stage('Deploy with Docker Compose') {
+            steps {
+                script {
+                    // Run docker-compose up
+                    sh 'docker-compose down'  // Stop any existing services (data persists due to volumes)
+                    sh 'docker-compose up -d' // Start services in detached mode
+                }
+            }
+        }
 
-        stage('Archive Deliverable') {
+  /*      stage('Archive Deliverable') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: false
             }
-        }
+        }*/
     }
 
     post {

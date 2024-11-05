@@ -8,4 +8,4 @@ WORKDIR /app
 COPY target/Foyer-0.0.1-SNAPSHOT.jar /app/Foyer-0.0.1-SNAPSHOT.jar
 
 # Set the entry point to run the JAR file
-ENTRYPOINT ["java", "-jar", "/app/foyer.jar"]
+ENTRYPOINT ["java", "-jar", "/app/Foyer-0.0.1-SNAPSHOT.jar"]

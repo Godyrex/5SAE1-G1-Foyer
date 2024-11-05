@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    image: oussemaouakad1/ouakadoussema_5sae1_g1_foyer:latest
+    container_name: springboot_app
+    ports:
+      - "8078:8078"  # Map the internal port of the Spring Boot app to your host
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/foyer  # JDBC URL with 'db' as the service name
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+    depends_on:
+      - db
+    volumes:
+      - app_logs:/logs  # Persistent volume for logs or other data (optional)
+
+  db:
+    image: mysql:8.0  # You can use any MySQL version you prefer
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: foyer  # Initial database to be created
+    ports:
+      - "3306:3306"  # Expose MySQL on port 3306
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+    driver: local
+  app_logs:
+    driver: local
