@@ -20,7 +20,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/devops
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
-      CORS_ORIGIN: "http://192.168.56.10:4200"
+      CORS_ORIGIN: "http://192.168.25.25:4200"
     ports:
       - "8082:8082"
     networks:
