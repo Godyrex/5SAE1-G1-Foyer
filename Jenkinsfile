@@ -20,6 +20,20 @@ pipeline {
             }
         }
 
+        stage('Run Tests with JaCoCo') {
+            steps {
+                sh 'mvn test jacoco:report'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('nour') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
         stage('Build Without Tests') {
             steps {
                 sh 'mvn package -DskipTests'
@@ -55,6 +69,13 @@ pipeline {
                     sh 'docker pull parkchanyeolnour/foyer-app:latest'
                 }
             }
+        }
+
+             stage('Deploy to Nexus') {
+            steps {
+                echo 'Deploying to Nexus...'
+                sh 'mvn deploy -X -DskipTests=true -DaltDeploymentRepository=nexus-snapshots::default::http://192.168.33.10:8081/repository/maven-snapshots/'
+                }
         }
 
         stage('Archive Deliverable') {
