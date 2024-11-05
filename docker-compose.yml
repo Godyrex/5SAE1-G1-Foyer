@@ -13,7 +13,7 @@ services:
       - app-network
 
   app:
-    image: wbahri-app
+    image: wbahri/back-devops:1.0
     depends_on:
       - mysqldb
     environment:
