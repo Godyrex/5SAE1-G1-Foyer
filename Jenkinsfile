@@ -74,8 +74,14 @@ pipeline {
              stage('Deploy to Nexus') {
             steps {
                 echo 'Deploying to Nexus...'
-                sh 'mvn deploy -X -DskipTests=true -DaltDeploymentRepository=nexus-snapshots::default::http://192.168.33.10:8081/repository/maven-snapshots/'
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
+                    sh '''
+                        mvn deploy -X -DskipTests=true \
+                        -DaltDeploymentRepository=nexus-snapshots::default::http://192.168.33.10:8081/repository/maven-snapshots/ \
+                        --settings <(echo "<settings><servers><server><id>nexus-snapshots</id><username>${NEXUS_USERNAME}</username><password>${NEXUS_PASSWORD}</password></server></servers></settings>")
+                    '''
                 }
+            }
         }
 
         stage('Archive Deliverable') {
