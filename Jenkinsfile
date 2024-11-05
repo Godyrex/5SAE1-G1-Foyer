@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        NEXUS_REPO_URL = 'http://192.168.33.10:8081/repository/maven-snapshots/'
+
+    }
 
     stages {
         stage('Clean Workspace') {
@@ -71,15 +75,10 @@ pipeline {
             }
         }
 
-             stage('Deploy to Nexus') {
+        stage('Deploy to Nexus') {
             steps {
-                echo 'Deploying to Nexus...'
-                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
-                    sh '''
-                        mvn deploy -X -DskipTests=true \
-                        -DaltDeploymentRepository=nexus-snapshots::default::http://192.168.33.10:8081/repository/maven-snapshots/ \
-                        --settings <(echo "<settings><servers><server><id>nexus-snapshots</id><username>${NEXUS_USERNAME}</username><password>${NEXUS_PASSWORD}</password></server></servers></settings>")
-                    '''
+                withCredentials([usernamePassword(credentialsId:'nexus-credentials', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
+                    sh "mvn deploy -DaltDeploymentRepository=nexus-snapshots::default::${env.NEXUS_REPO_URL} -DskipTests"
                 }
             }
         }
