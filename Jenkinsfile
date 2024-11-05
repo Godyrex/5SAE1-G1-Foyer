@@ -75,7 +75,7 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId:'nexus-credentials', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
-                    sh "mvn deploy -DaltDeploymentRepository=nexus-snapshots::default::http://192.168.33.10:8081/repository/maven-snapshots/ -DskipTests"
+                    sh "mvn deploy -DaltDeploymentRepository=nexus-snapshots::http://192.168.33.10:8081/repository/maven-snapshots/ -DskipTests"
                 }
             }
         }
