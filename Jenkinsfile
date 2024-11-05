@@ -93,6 +93,7 @@ pipeline {
             steps {
                 script {
                     // Run docker-compose up
+                    
                     sh 'docker-compose down'  // Stop any existing services (data persists due to volumes)
                     sh 'docker-compose up -d' // Start services in detached mode
                 }
