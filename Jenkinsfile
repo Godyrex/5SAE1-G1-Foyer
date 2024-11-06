@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image with a specific tag
-                    sh 'docker build -t parkchanyeolnour/foyer-app:latest .'
+                    sh 'docker build -t parkchanyeolnour/challoufnour_5sae1_g1_foyer:latest .'
                 }
             }
         }
@@ -56,7 +56,7 @@ pipeline {
                         // Login to Docker Hub
                         sh "echo ${dockerHubPassword} | docker login -u ${dockerHubUser} --password-stdin"
                         // Push the Docker image
-                        sh 'docker push parkchanyeolnour/foyer-app:latest'
+                        sh 'docker push parkchanyeolnour/challoufnour_5sae1_g1_foyer:latest'
                     }
                 }
             }
@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     // Pull the Docker image
-                    sh 'docker pull parkchanyeolnour/foyer-app:latest'
+                    sh 'docker pull parkchanyeolnour/challoufnour_5sae1_g1_foyer:latest'
                 }
             }
         }
