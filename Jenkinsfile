@@ -13,7 +13,15 @@ pipeline {
                 git branch: 'OuakadOussema_5SAE1_G1', url: 'git@github.com:Godyrex/5SAE1-G1-Foyer.git', credentialsId: 'oussema'
             }
         }
-
+    stage('Verify Working Directory') {
+        steps {
+            script {
+                // Verify where we are
+                sh 'pwd' // Should output the workspace path
+                sh 'ls -l' // Should list the contents of the workspace
+            }
+        }
+    }
         stage('Clean Project') {
             steps {
                 sh 'mvn clean'
@@ -89,7 +97,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy with Docker Compose') {
+    /*    stage('Deploy with Docker Compose') {
             steps {
                 script {
                     // Run docker-compose up
@@ -98,7 +106,7 @@ pipeline {
                     sh 'docker-compose up -d' // Start services in detached mode
                 }
             }
-        }
+        }*/
 
   /*      stage('Archive Deliverable') {
             steps {
