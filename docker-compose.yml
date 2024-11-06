@@ -1,37 +1,31 @@
-version: '3.8'
-
+version: '3'
 services:
-  database:
+  mysqldb:
     image: mysql:5.7
-    container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: foyer
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root_password
+      MYSQL_DATABASE: foyer  # Change to your desired database name
+      MYSQL_USER: root       # Use your specified user
+      MYSQL_PASSWORD: root_password  # Use your specified password
+      MYSQL_ROOT_PASSWORD: root_password  # Use your specified root password
     ports:
       - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
+    networks:
+      - app-network
 
   app:
-    image: openjdk:17-jdk-alpine
-    container_name: spring_app
+    image: parkchanyeolnour/foyer-app:latest  # Use your custom image here
+    depends_on:
+      - mysqldb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/foyer?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root_password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SERVER_PORT: 8081
-      SERVER_SERVLET_CONTEXT_PATH: /Foyer
-    depends_on:
-      - database
-    ports:
-      - "8082:8082"
-    volumes:
-      - ./target:/app
-    working_dir: /app
-    command: ["java", "-jar", "Foyer-0.0.1-SNAPSHOT.jar"]
 
-volumes:
-  db_data:
+    ports:
+      - "8082:8082"  # Adjust the port if necessary
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
