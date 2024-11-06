@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-
     stages {
         stage('Clean Workspace') {
             steps {
@@ -74,8 +73,19 @@ pipeline {
 
         stage('Deploy to Nexus') {
             steps {
-                withCredentials([usernamePassword(credentialsId:'nexus-credentials', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'nexusPassword', usernameVariable: 'nexusUsername')]) {
                     sh "mvn deploy -DaltDeploymentRepository=nexus-snapshots::http://192.168.33.10:8081/repository/maven-snapshots/ -DskipTests"
+                }
+            }
+        }
+
+        stage('Docker Compose Up') {
+            steps {
+                script {
+                    echo 'Starting services with Docker Compose...'
+                    // Pull the latest image and start services with Docker Compose
+                    sh 'docker-compose down'  // Use 'docker-compose' instead of 'docker compose'
+                    sh 'docker-compose up -d'  // Use 'docker-compose' instead of 'docker compose'
                 }
             }
         }
